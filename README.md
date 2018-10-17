@@ -27,7 +27,7 @@ The database named `itemcatalog` consist of three tables
 
 ## Setup project
 
-Copy the `catalog` project into the`vagrant` directory, which is shared with your virtual machine.
+Clone the project into the`vagrant` directory, which is shared with your virtual machine.
 
 Run the following command to set up the database:
 ```
