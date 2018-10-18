@@ -1,7 +1,14 @@
 #!/usr/bin/env python
 
-from flask import Flask, render_template, request, redirect, jsonify
-from flask import url_for, flash, g
+from flask import (
+    Flask,
+    render_template,
+    request,
+    redirect,
+    jsonify,
+    url_for,
+    flash
+    )
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Category, CategoryItem, User
@@ -38,6 +45,7 @@ def showLogin():
     login_session['state'] = state
     # return "The current session state is %s" % login_session['state']
     return render_template('login.html', STATE=state)
+
 
 # Connect to google oauth
 @app.route('/gconnect', methods=['POST'])
@@ -123,7 +131,6 @@ def gconnect():
         user_id = createUser(login_session)
     login_session['user_id'] = user_id
 
-    g.user = getUserInfo(user_id)
     output = ''
     output += '<h1>Welcome, '
     output += login_session['username']
@@ -182,7 +189,6 @@ def gdisconnect():
         del login_session['username']
         del login_session['email']
         del login_session['picture']
-        g.user = None
 
         response = make_response(json.dumps('Successfully disconnected.'), 200)
         response.headers['Content-Type'] = 'application/json'
@@ -288,8 +294,7 @@ def showItem(category_id):
     print("showItem")
     print(items)
 
-    checkUserName = 'username' not in login_session
-    if checkUserName or creator.id != login_session['user_id']:
+    if 'username' not in login_session:
         return render_template('public_category_item.html', items=items,
                                category=category, creator=creator)
     else:
